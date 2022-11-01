@@ -45,4 +45,22 @@ describe('Verifica componentes da wallet', () => {
     expect(value).not.toHaveValue(50);
     expect(desc).not.toHaveValue('test');
   });
+
+  test('Verifica campos da tabela de despesas', () => {
+    const INITIAL_STATE = { user: { email: mail },
+      wallet: { expenses: [], currencies } };
+    renderWithRouterAndRedux(<Wallet />, { initialState: INITIAL_STATE });
+    const tableHeaders = screen.getAllByRole('columnheader');
+    expect(tableHeaders).toHaveLength(9);
+    const headerNames = ['Descrição', 'Tag', 'Método de pagamento', 'Valor', 'Moeda', 'Câmbio utilizado', 'Valor convertido', 'Moeda de conversão', 'Editar/Excluir'];
+    expect(tableHeaders[0]).toHaveTextContent(headerNames[0]);
+    expect(tableHeaders[1]).toHaveTextContent(headerNames[1]);
+    expect(tableHeaders[2]).toHaveTextContent(headerNames[2]);
+    expect(tableHeaders[3]).toHaveTextContent(headerNames[3]);
+    expect(tableHeaders[4]).toHaveTextContent(headerNames[4]);
+    expect(tableHeaders[5]).toHaveTextContent(headerNames[5]);
+    expect(tableHeaders[6]).toHaveTextContent(headerNames[6]);
+    expect(tableHeaders[7]).toHaveTextContent(headerNames[7]);
+    expect(tableHeaders[8]).toHaveTextContent(headerNames[8]);
+  });
 });
