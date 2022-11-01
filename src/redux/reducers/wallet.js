@@ -1,4 +1,4 @@
-import { ADICIONA_DESPESA, RECEIVE_CURRENCY } from '../actions';
+import { ADICIONA_DESPESA, DELETE_DESPESA, RECEIVE_CURRENCY } from '../actions';
 
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
 const INITIAL_WALLET = {
@@ -36,6 +36,11 @@ const wallet = (state = INITIAL_WALLET, action) => {
     return {
       ...state,
       expenses: addExpenses(state, action),
+    };
+  case DELETE_DESPESA:
+    return {
+      ...state,
+      expenses: state.expenses.filter((exp) => exp.id !== parseFloat(action.id)),
     };
   default:
     return state;

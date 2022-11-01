@@ -44,3 +44,9 @@ export const fetchDespesa = (expenseData) => (dispatch) => {
     .then((response) => response.json())
     .then((currency) => dispatch(adicionaDespesa(currency, expenseData)));
 };
+
+export const DELETE_DESPESA = 'DELETE_DESPESA';
+export const deleteDespesa = (id) => ({
+  type: DELETE_DESPESA,
+  id,
+});
