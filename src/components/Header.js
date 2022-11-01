@@ -5,12 +5,10 @@ import { connect } from 'react-redux';
 class Header extends Component {
   render() {
     const { user, expenses } = this.props;
-    console.log(expenses);
     const total = expenses.reduce((acc, cur) => {
       const rates = Object.entries(cur.exchangeRates);
       const currency = rates.find((el) => el[0] === cur.currency)[1];
       const convertValue = cur.value * currency.ask;
-      console.log(acc + convertValue);
       return acc + convertValue;
     }, 0);
     return (

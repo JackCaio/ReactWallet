@@ -22,16 +22,14 @@ describe('Verifica componentes da wallet', () => {
     const INITIAL_STATE = { user: { email: mail },
       wallet: { expenses: [], currencies } };
     renderWithRouterAndRedux(<Wallet />, { initialState: INITIAL_STATE });
-    const value = screen.getByTestId('value-input');
-    const desc = screen.getByTestId('description-input');
+    screen.getByTestId('value-input');
+    screen.getByTestId('description-input');
     const currency = screen.getByTestId('currency-input');
     const method = screen.getByTestId('method-input');
     const tag = screen.getByTestId('tag-input');
-    expect(value).toHaveValue(0);
-    expect(desc).toHaveValue('');
     expect(currency).toHaveValue('USD');
-    expect(method).toHaveValue('dinheiro');
-    expect(tag).toHaveValue('alimentacao');
+    expect(method).toHaveValue('Dinheiro');
+    expect(tag).toHaveValue('Alimentação');
   });
 
   test('Adicionar despesa limpa inputs', () => {

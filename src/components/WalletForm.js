@@ -8,7 +8,7 @@ const initialState = {
   description: '',
   currency: 'USD',
   method: 'Dinheiro',
-  tag: 'Alimentacao',
+  tag: 'Alimentação',
 };
 class WalletForm extends Component {
   constructor() {
@@ -18,7 +18,7 @@ class WalletForm extends Component {
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
-      tag: 'Alimentacao',
+      tag: 'Alimentação',
     };
   }
 
