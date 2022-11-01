@@ -39,9 +39,12 @@ describe('Verifica componentes da wallet', () => {
       wallet: { expenses: [], currencies } };
     renderWithRouterAndRedux(<Wallet />, { initialState: INITIAL_STATE });
     const addDespesa = screen.getByRole('button', { name: /adicionar despesa/i });
-    userEvent.type(screen.getByTestId('value-input'), '50');
-    userEvent.type(screen.getByTestId('description-input'), 'test');
+    const value = screen.getByTestId('value-input');
+    userEvent.type(value, '50');
+    const desc = screen.getByTestId('description-input');
+    userEvent.type(desc, 'test');
     userEvent.click(addDespesa);
-    expect(screen.getByTestId).not.toHaveValue(50);
+    expect(value).not.toHaveValue(50);
+    expect(desc).not.toHaveValue('test');
   });
 });
