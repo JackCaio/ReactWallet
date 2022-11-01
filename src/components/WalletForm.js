@@ -1,16 +1,24 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { fetchDespesa } from '../redux/actions';
 
+const initialState = {
+  value: '',
+  description: '',
+  currency: 'USD',
+  method: 'Dinheiro',
+  tag: 'Alimentacao',
+};
 class WalletForm extends Component {
   constructor() {
     super();
     this.state = {
-      value: 0,
+      value: '',
       description: '',
-      currency: 'BRL',
-      method: 'dinheiro',
-      tag: 'alimentacao',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentacao',
     };
   }
 
@@ -19,6 +27,12 @@ class WalletForm extends Component {
     this.setState({
       [name]: value,
     });
+  };
+
+  createExpense = () => {
+    const { dispatch } = this.props;
+    dispatch(fetchDespesa(this.state));
+    this.setState(initialState);
   };
 
   render() {
@@ -67,9 +81,9 @@ class WalletForm extends Component {
             onChange={ this.changeInput }
             value={ method }
           >
-            <option value="dinheiro">Dinheiro</option>
-            <option value="credito">Cartão de crédito</option>
-            <option value="debito">Cartão de débito</option>
+            <option value="Dinheiro">Dinheiro</option>
+            <option value="Cartão de crédito">Cartão de crédito</option>
+            <option value="Cartão de débito">Cartão de débito</option>
           </select>
         </label>
         <label htmlFor="tag">
@@ -80,13 +94,19 @@ class WalletForm extends Component {
             onChange={ this.changeInput }
             value={ tag }
           >
-            <option value="alimentacao">Alimentação</option>
-            <option value="lazer">Lazer</option>
-            <option value="trabalho">Trabalho</option>
-            <option value="transporte">Transporte</option>
-            <option value="saude">Saúde</option>
+            <option value="Alimentação">Alimentação</option>
+            <option value="Lazer">Lazer</option>
+            <option value="Trabalho">Trabalho</option>
+            <option value="Transporte">Transporte</option>
+            <option value="Saúde">Saúde</option>
           </select>
         </label>
+        <button
+          type="button"
+          onClick={ this.createExpense }
+        >
+          Adicionar despesa
+        </button>
       </div>
     );
   }
@@ -94,6 +114,7 @@ class WalletForm extends Component {
 
 WalletForm.propTypes = {
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

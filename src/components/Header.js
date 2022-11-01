@@ -5,12 +5,20 @@ import { connect } from 'react-redux';
 class Header extends Component {
   render() {
     const { user, expenses } = this.props;
+    console.log(expenses);
+    const total = expenses.reduce((acc, cur) => {
+      const rates = Object.entries(cur.exchangeRates);
+      const currency = rates.find((el) => el[0] === cur.currency)[1];
+      const convertValue = cur.value * currency.ask;
+      console.log(acc + convertValue);
+      return acc + convertValue;
+    }, 0);
     return (
       // <div>Header</div>
       <div>
         <h6 data-testid="email-field">{user}</h6>
         <p>
-          <span data-testid="total-field">{expenses.length === 0 && 0}</span>
+          <span data-testid="total-field">{parseFloat(total).toFixed(2)}</span>
           <span data-testid="header-currency-field">BRL</span>
         </p>
       </div>
@@ -18,8 +26,14 @@ class Header extends Component {
   }
 }
 
+Header.defaultProps = {
+  expenses: [],
+};
+
 Header.propTypes = {
-  expenses: PropTypes.arrayOf(PropTypes.number).isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.shape({
+    value: PropTypes.string,
+  })),
   user: PropTypes.string.isRequired,
 };
 

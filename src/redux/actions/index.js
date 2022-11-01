@@ -25,3 +25,22 @@ export const fetchCurrency = () => (dispatch) => {
       dispatch(receiveCurrency(currencyArray));
     });
 };
+
+export const CRIA_DESPESA = 'CRIA_DESPESA';
+export const criaDespesa = () => ({
+  type: CRIA_DESPESA,
+});
+
+export const ADICIONA_DESPESA = 'ADICIONA_DESPESA';
+export const adicionaDespesa = (exchangeRates, expenseData) => ({
+  type: ADICIONA_DESPESA,
+  exchangeRates,
+  expenseData,
+});
+
+export const fetchDespesa = (expenseData) => (dispatch) => {
+  dispatch(criaDespesa());
+  return fetch('https://economia.awesomeapi.com.br/json/all')
+    .then((response) => response.json())
+    .then((currency) => dispatch(adicionaDespesa(currency, expenseData)));
+};
