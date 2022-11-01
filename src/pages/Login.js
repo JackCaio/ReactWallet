@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { loginMail } from '../redux/actions';
+import { fetchCurrency, loginMail } from '../redux/actions';
 
 const MIN_PASS_LENGTH = 6;
 class Login extends React.Component {
@@ -37,6 +37,7 @@ class Login extends React.Component {
     const { user } = this.state;
     const { dispatch, history: { push } } = this.props;
     dispatch(loginMail(user));
+    dispatch(fetchCurrency());
     push('/carteira');
   };
 
