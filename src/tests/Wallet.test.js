@@ -6,6 +6,7 @@ import { renderWithRouterAndRedux } from './helpers/renderWith';
 
 const mail = 'test@test.com';
 const currencies = Object.keys(mockData).filter((currency) => currency !== 'USDT');
+const USD = { code: 'USD', name: 'Dólar Americano/Real Brasileiro', ask: '5.00' };
 describe('Verifica componentes da wallet', () => {
   test('Verifica estado inicial de Header', () => {
     const INITIAL_STATE = { user: { email: mail } };
@@ -74,11 +75,7 @@ describe('Verifica componentes da wallet', () => {
         method: 'Dinheiro',
         tag: 'Lazer',
         exchangeRates: {
-          USD: {
-            code: 'USD',
-            name: 'Dólar Americano/Real Brasileiro',
-            ask: '5.00',
-          },
+          USD,
         },
       }],
       currencies } };
@@ -105,5 +102,37 @@ describe('Verifica componentes da wallet', () => {
       name: /10\.00/i,
     });
     screen.getByRole('cell', { name: 'Real' });
+  });
+
+  test('Verifica funcionamento de botão de exclusão', () => {
+    const INITIAL_STATE = { user: { email: mail },
+      wallet: { expenses: [{
+        id: 0,
+        value: '2',
+        description: 'teste',
+        currency: 'USD',
+        method: 'Dinheiro',
+        tag: 'Lazer',
+        exchangeRates: {
+          USD,
+        },
+      },
+      {
+        id: 1,
+        value: '4',
+        description: 'exclusao',
+        currency: 'USD',
+        method: 'Dinheiro',
+        tag: 'Lazer',
+        exchangeRates: {
+          USD,
+        },
+      }],
+      currencies } };
+    renderWithRouterAndRedux(<Wallet />, { initialState: INITIAL_STATE });
+    const deleteBtns = screen.getAllByTestId('delete-btn');
+    expect(deleteBtns).toHaveLength(2);
+    userEvent.click(deleteBtns[1]);
+    expect(screen.getAllByTestId('delete-btn')).toHaveLength(1);
   });
 });
