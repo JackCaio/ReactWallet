@@ -63,4 +63,47 @@ describe('Verifica componentes da wallet', () => {
     expect(tableHeaders[7]).toHaveTextContent(headerNames[7]);
     expect(tableHeaders[8]).toHaveTextContent(headerNames[8]);
   });
+
+  test('Verifica renderização da tabela de gastos', () => {
+    const INITIAL_STATE = { user: { email: mail },
+      wallet: { expenses: [{
+        id: 0,
+        value: '2',
+        description: 'teste',
+        currency: 'USD',
+        method: 'Dinheiro',
+        tag: 'Lazer',
+        exchangeRates: {
+          USD: {
+            code: 'USD',
+            name: 'Dólar Americano/Real Brasileiro',
+            ask: '5.00',
+          },
+        },
+      }],
+      currencies } };
+    renderWithRouterAndRedux(<Wallet />, { initialState: INITIAL_STATE });
+    screen.getByRole('cell', {
+      name: /teste/i,
+    });
+    screen.getByRole('cell', {
+      name: /lazer/i,
+    });
+    screen.getByRole('cell', {
+      name: /dinheiro/i,
+    });
+    screen.getByRole('cell', {
+      name: /2\.00/i,
+    });
+    screen.getByRole('cell', {
+      name: /dólar americano\/real brasileiro/i,
+    });
+    screen.getByRole('cell', {
+      name: /5\.00/i,
+    });
+    screen.getByRole('cell', {
+      name: /10\.00/i,
+    });
+    screen.getByRole('cell', { name: 'Real' });
+  });
 });
