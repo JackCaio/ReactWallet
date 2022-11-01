@@ -10,9 +10,11 @@ const INITIAL_WALLET = {
 
 const addExpenses = (curState, { exchangeRates, expenseData }) => {
   const { value, description, currency, method, tag } = expenseData;
+  const { expenses } = curState;
+  const id = (expenses.length === 0) ? 0 : expenses[expenses.length - 1].id + 1;
   return [
     ...curState.expenses, {
-      id: curState.expenses.length,
+      id,
       value,
       description,
       currency,
