@@ -1,4 +1,5 @@
 import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import Wallet from '../pages/Wallet';
 import mockData from './helpers/mockData';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
@@ -31,5 +32,16 @@ describe('Verifica componentes da wallet', () => {
     expect(currency).toHaveValue('USD');
     expect(method).toHaveValue('dinheiro');
     expect(tag).toHaveValue('alimentacao');
+  });
+
+  test('Adicionar despesa limpa inputs', () => {
+    const INITIAL_STATE = { user: { email: mail },
+      wallet: { expenses: [], currencies } };
+    renderWithRouterAndRedux(<Wallet />, { initialState: INITIAL_STATE });
+    const addDespesa = screen.getByRole('button', { name: /adicionar despesa/i });
+    userEvent.type(screen.getByTestId('value-input'), '50');
+    userEvent.type(screen.getByTestId('description-input'), 'test');
+    userEvent.click(addDespesa);
+    expect(screen.getByTestId).not.toHaveValue(50);
   });
 });
