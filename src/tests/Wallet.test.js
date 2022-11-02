@@ -7,6 +7,9 @@ import { renderWithRouterAndRedux } from './helpers/renderWith';
 const mail = 'test@test.com';
 const currencies = Object.keys(mockData).filter((currency) => currency !== 'USDT');
 const USD = { code: 'USD', name: 'Dólar Americano/Real Brasileiro', ask: '5.00' };
+const JPY = { code: 'JPY', name: 'Iene Japonês/Real Brasileiro', ask: '0.5' };
+const valId = 'value-input';
+const descId = 'description-input';
 describe('Verifica componentes da wallet', () => {
   test('Verifica estado inicial de Header', () => {
     const INITIAL_STATE = { user: { email: mail } };
@@ -23,8 +26,8 @@ describe('Verifica componentes da wallet', () => {
     const INITIAL_STATE = { user: { email: mail },
       wallet: { expenses: [], currencies } };
     renderWithRouterAndRedux(<Wallet />, { initialState: INITIAL_STATE });
-    screen.getByTestId('value-input');
-    screen.getByTestId('description-input');
+    screen.getByTestId(valId);
+    screen.getByTestId(descId);
     const currency = screen.getByTestId('currency-input');
     const method = screen.getByTestId('method-input');
     const tag = screen.getByTestId('tag-input');
@@ -38,9 +41,9 @@ describe('Verifica componentes da wallet', () => {
       wallet: { expenses: [], currencies } };
     renderWithRouterAndRedux(<Wallet />, { initialState: INITIAL_STATE });
     const addDespesa = screen.getByRole('button', { name: /adicionar despesa/i });
-    const value = screen.getByTestId('value-input');
+    const value = screen.getByTestId(valId);
     userEvent.type(value, '50');
-    const desc = screen.getByTestId('description-input');
+    const desc = screen.getByTestId(descId);
     userEvent.type(desc, 'test');
     userEvent.click(addDespesa);
     expect(value).not.toHaveValue(50);
@@ -134,5 +137,45 @@ describe('Verifica componentes da wallet', () => {
     expect(deleteBtns).toHaveLength(2);
     userEvent.click(deleteBtns[1]);
     expect(screen.getAllByTestId('delete-btn')).toHaveLength(1);
+  });
+
+  test('Verifica funcionamento do botão de edição', () => {
+    const INITIAL_STATE = { user: { email: mail },
+      wallet: { expenses: [{
+        id: 0,
+        value: '2',
+        description: 'teste',
+        currency: 'USD',
+        method: 'Dinheiro',
+        tag: 'Lazer',
+        exchangeRates: {
+          USD,
+        },
+      },
+      {
+        id: 1,
+        value: '4',
+        description: 'Descricao',
+        currency: 'JPY',
+        method: 'Dinheiro',
+        tag: 'Lazer',
+        exchangeRates: {
+          JPY,
+        },
+      }],
+      currencies,
+      editor: true,
+      idToEdit: 1 } };
+    renderWithRouterAndRedux(<Wallet />, { initialState: INITIAL_STATE });
+    const editBtns = screen.getAllByTestId('edit-btn');
+    userEvent.click(editBtns[1]);
+    const valInput = screen.getByTestId(valId);
+    expect(valInput).toHaveValue(4);
+    expect(screen.getByTestId(descId)).toHaveValue('Descricao');
+    expect(screen.getByTestId('currency-input')).toHaveValue('JPY');
+    expect(screen.getByTestId('method-input')).toHaveValue('Dinheiro');
+    expect(screen.getByTestId('tag-input')).toHaveValue('Lazer');
+    userEvent.type(valInput, '10');
+    screen.getByRole('cell', { name: '10.00' });
   });
 });
