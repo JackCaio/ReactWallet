@@ -50,3 +50,15 @@ export const deleteDespesa = (id) => ({
   type: DELETE_DESPESA,
   id,
 });
+
+export const EDIT_DESPESA = 'EDIT_DESPESA';
+export const editDespesa = (id) => ({
+  type: EDIT_DESPESA,
+  id,
+});
+
+export const CONFIRM_EDIT = 'CONFIRM_EDIT';
+export const confirmEdit = (expenseData) => ({
+  type: CONFIRM_EDIT,
+  expenseData,
+});

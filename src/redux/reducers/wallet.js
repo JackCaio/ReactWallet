@@ -1,4 +1,5 @@
-import { ADICIONA_DESPESA, DELETE_DESPESA, RECEIVE_CURRENCY } from '../actions';
+import { ADICIONA_DESPESA, CONFIRM_EDIT, DELETE_DESPESA, EDIT_DESPESA,
+  RECEIVE_CURRENCY } from '../actions';
 
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
 const INITIAL_WALLET = {
@@ -25,6 +26,13 @@ const addExpenses = (curState, { exchangeRates, expenseData }) => {
   ];
 };
 
+const editExpenses = (expenses, expenseData) => expenses.map((ex) => {
+  if (ex.id !== expenseData.id) {
+    return ex;
+  }
+  return expenseData;
+});
+
 const wallet = (state = INITIAL_WALLET, action) => {
   switch (action.type) {
   case RECEIVE_CURRENCY:
@@ -42,6 +50,19 @@ const wallet = (state = INITIAL_WALLET, action) => {
       ...state,
       expenses: state.expenses.filter((exp) => exp.id !== parseFloat(action.id)),
     };
+  case EDIT_DESPESA:
+    return {
+      ...state,
+      editor: true,
+      idToEdit: action.id,
+    };
+  case CONFIRM_EDIT:
+    return {
+      ...state,
+      expenses: editExpenses(state.expenses, action.expenseData),
+      editor: false,
+      idToEdit: 0,
+    }; // editExpenses(state.expenses, action.expenseData);
   default:
     return state;
   }

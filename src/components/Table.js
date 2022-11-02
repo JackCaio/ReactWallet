@@ -1,13 +1,19 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { deleteDespesa } from '../redux/actions';
+import { deleteDespesa, editDespesa } from '../redux/actions';
 
 class Table extends Component {
   deleteExpense = (event) => {
     const { name } = event.target;
     const { dispatch } = this.props;
     dispatch(deleteDespesa(name));
+  };
+
+  editExpense = (event) => {
+    const { name } = event.target;
+    const { dispatch } = this.props;
+    dispatch(editDespesa(parseFloat(name)));
   };
 
   render() {
@@ -43,7 +49,14 @@ class Table extends Component {
                 <td>{value.toFixed(2)}</td>
                 <td>Real</td>
                 <td>
-                  <button type="button">Editar</button>
+                  <button
+                    name={ expense.id }
+                    type="button"
+                    data-testid="edit-btn"
+                    onClick={ this.editExpense }
+                  >
+                    Editar
+                  </button>
                   <button
                     name={ expense.id }
                     type="button"
