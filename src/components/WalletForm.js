@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { confirmEdit, fetchCurrency, fetchDespesa } from '../redux/actions';
+import { confirmEdit, fetchDespesa } from '../redux/actions';
 
 const initialState = {
   value: '',
@@ -24,12 +24,12 @@ class WalletForm extends Component {
     };
   }
 
-  componentDidMount() {
-    const { wallet: { currencies }, dispatch } = this.props;
-    if (currencies.length === 0) {
-      dispatch(fetchCurrency());
-    }
-  }
+  // componentDidMount() {
+  //   const { wallet: { currencies }, dispatch } = this.props;
+  //   if (currencies.length === 0) {
+  //     dispatch(fetchCurrency());
+  //   }
+  // }
 
   changeInput = (event) => {
     const { name, value } = event.target;
