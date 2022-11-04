@@ -16,7 +16,7 @@ export const receiveCurrency = (currency) => ({
   currency,
 });
 
-export const fetchCurrency = () => (dispatch) => {
+export const fetchCurrency = () => async (dispatch) => {
   dispatch(searchCurrency());
   return fetch('https://economia.awesomeapi.com.br/json/all')
     .then((response) => response.json())

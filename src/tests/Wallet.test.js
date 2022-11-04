@@ -37,6 +37,7 @@ describe('Verifica componentes da wallet', () => {
   });
 
   test('Adicionar despesa limpa inputs', () => {
+    global.fetch = jest.spyOn(global, 'fetch').mockImplementation(() => Promise.resolve({ json: () => Promise.resolve(mockData) }));
     const INITIAL_STATE = { user: { email: mail },
       wallet: { expenses: [], currencies } };
     renderWithRouterAndRedux(<Wallet />, { initialState: INITIAL_STATE });
@@ -46,6 +47,7 @@ describe('Verifica componentes da wallet', () => {
     const desc = screen.getByTestId(descId);
     userEvent.type(desc, 'test');
     userEvent.click(addDespesa);
+    expect(global.fetch).toHaveBeenCalledTimes(1);
     expect(value).not.toHaveValue(50);
     expect(desc).not.toHaveValue('test');
   });
@@ -139,7 +141,7 @@ describe('Verifica componentes da wallet', () => {
     expect(screen.getAllByTestId('delete-btn')).toHaveLength(1);
   });
 
-  test('Verifica funcionamento do botão de edição', () => {
+  test('Verifica funcionamento do botão de edição', async () => {
     const INITIAL_STATE = { user: { email: mail },
       wallet: { expenses: [{
         id: 0,
@@ -175,7 +177,9 @@ describe('Verifica componentes da wallet', () => {
     expect(screen.getByTestId('currency-input')).toHaveValue('JPY');
     expect(screen.getByTestId('method-input')).toHaveValue('Dinheiro');
     expect(screen.getByTestId('tag-input')).toHaveValue('Lazer');
-    userEvent.type(valInput, '10');
-    screen.getByRole('cell', { name: '10.00' });
+    userEvent.type(valInput, '2');
+    userEvent.click(screen.getByRole('button', { name: /editar despesa/i }));
+    await screen.findByRole('cell', { name: '42.00' });
+    expect(screen.getByTestId(descId)).not.toHaveValue('Descricao');
   });
 });

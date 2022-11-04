@@ -32,4 +32,11 @@ describe('Verifica página de Login', () => {
     userEvent.click(loginBtn);
     expect(history.location.pathname).toBe('/carteira');
   });
+
+  test('Checa funcionamento de page not found', async () => {
+    const { history } = renderWithRouterAndRedux(<App />);
+    history.push('/testRoute');
+    expect(history.location.pathname).toBe('/testRoute');
+    expect(await screen.findByRole('heading', { name: /Page Not Found/i, level: 2 })).toBeVisible();
+  });
 });
